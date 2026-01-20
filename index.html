@@ -481,28 +481,39 @@ window.visitProject = function (url) {
 </div>
 
 <!-- form script -->
-
 <script>
   const form = document.getElementById("contactForm");
   const modal = document.getElementById("successModal");
   const closeBtn = document.getElementById("closeSuccess");
 
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbzzIwRqFGXZTZ8GnXr4OMUcFrGCcCihZnly1-HUWgt5As9YyjjMCP6aXMQMmEZnvv6duw/exec";
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const formData = {
-      name: name.value,
-      phone: phone.value,
-      email: email.value,
-      message: message.value,
-    };
+    const formData = new FormData(form);
 
-    console.log("Form submitted:", formData);
-
-    modal.classList.add("show");
-    form.reset();
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.text())
+      .then((text) => {
+        if (text === "success") {
+          // ✅ show success modal
+          modal.classList.add("show");
+          form.reset();
+        } else {
+          console.error("Unexpected response:", text);
+        }
+      })
+      .catch((err) => {
+        console.error("Submission error:", err);
+      });
   });
 
+  // close modal
   closeBtn.addEventListener("click", () => {
     modal.classList.remove("show");
   });
