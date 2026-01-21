@@ -398,8 +398,7 @@ window.visitProject = function (url) {
 
 </script>
 
-</body>
-</html>
+
 
 <div class="divider"></div>
 
@@ -422,10 +421,22 @@ window.visitProject = function (url) {
                         <input type="text" id="name" name="name" placeholder="Enter Your Name" required>
                     </div>
 
-                    <div class="contact-us-form-group"data-aos="fade-down" data-aos-duration="800" data-aos-delay="200">
+                   <div class="contact-us-form-group"
+                            data-aos="fade-down"
+                            data-aos-duration="800"
+                            data-aos-delay="200">
+
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Enter Your Number" required>
-                    </div>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="Enter Your Number"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            maxlength="15"
+                        >
+                        </div>
 
                     <div class="contact-us-form-group"data-aos="fade-down" data-aos-duration="800" data-aos-delay="300">
                         <label for="email">Email</label>
@@ -453,6 +464,14 @@ window.visitProject = function (url) {
         </div>
     </div>
     </section>
+    <script>
+const phoneInput = document.getElementById("phone");
+
+phoneInput.addEventListener("input", function () {
+  this.value = this.value.replace(/\D/g, ""); // allow digits only
+});
+</script>
+
 
     <!-- SUCCESS MODAL -->
 <div id="successModal" class="success-modal">
