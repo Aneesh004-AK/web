@@ -437,7 +437,12 @@ window.visitProject = function (url) {
                         <textarea id="message" name="message" placeholder="Type Your Message" required></textarea>
                     </div>
 
-                    <button type="submit" class="contact-us-submit-btn" data-aos="fade-down" data-aos-duration="800" data-aos-delay="500">Submit</button>
+                    <button type="submit" class="contact-us-submit-btn" id="submitBtn"
+        data-aos="fade-down" data-aos-duration="800" data-aos-delay="500">
+    <span class="btn-text">Submit</span>
+    <span class="btn-loader"></span>
+</button>
+
                 </form>
             </div>
         </div>
@@ -480,17 +485,28 @@ window.visitProject = function (url) {
   </div>
 </div>
 
+
 <!-- form script -->
+ 
 <script>
   const form = document.getElementById("contactForm");
   const modal = document.getElementById("successModal");
   const closeBtn = document.getElementById("closeSuccess");
+
+  const submitBtn = document.getElementById("submitBtn");
+  const btnText = submitBtn.querySelector(".btn-text");
+  const loader = submitBtn.querySelector(".btn-loader");
 
   const SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbzzIwRqFGXZTZ8GnXr4OMUcFrGCcCihZnly1-HUWgt5As9YyjjMCP6aXMQMmEZnvv6duw/exec";
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+
+    // ✅ show loader & disable button
+    submitBtn.disabled = true;
+    btnText.textContent = "Sending...";
+    loader.style.display = "inline-block";
 
     const formData = new FormData(form);
 
@@ -501,7 +517,6 @@ window.visitProject = function (url) {
       .then((res) => res.text())
       .then((text) => {
         if (text === "success") {
-          // ✅ show success modal
           modal.classList.add("show");
           form.reset();
         } else {
@@ -510,14 +525,20 @@ window.visitProject = function (url) {
       })
       .catch((err) => {
         console.error("Submission error:", err);
+      })
+      .finally(() => {
+        // ✅ restore button
+        submitBtn.disabled = false;
+        btnText.textContent = "Submit";
+        loader.style.display = "none";
       });
   });
 
-  // close modal
   closeBtn.addEventListener("click", () => {
     modal.classList.remove("show");
   });
 </script>
+
 
 
 
